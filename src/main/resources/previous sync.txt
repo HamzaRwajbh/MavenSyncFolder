@@ -1,0 +1,9 @@
+C:\A;New folder (2)
+C:\A\New folder (2);New folder
+C:\A\New folder (2)\New folder;New folder
+C:\A\New folder (2)\New folder;OCA Oracle Certified Associate Java SE 8 [2014] - Copy.pdf
+C:\A\New folder (2)\New folder;Sync-39abc567bfdad41b685c2ab1d8269b1b378ef4a0.zip
+C:\A\New folder (2);SkypeSetup.exe
+C:\A;New folder (3)
+C:\A;OCA Oracle Certified Associate Java SE 8 [2014].pdf
+C:\A;SkypeSetup.exe
