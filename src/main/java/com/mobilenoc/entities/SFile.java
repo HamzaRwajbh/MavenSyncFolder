@@ -5,10 +5,12 @@ import java.io.File;
 public class SFile extends File {
 
     private boolean syncStatus = true ;
-    private boolean moveStatus = false ;
-    private boolean renameStatus = false ;
-    private boolean newStatus = false ;
-    private boolean deleteStatus = false ;
+
+    public static final String MOVE = "MOVE" ;
+    public static final String NEW = "NEW" ;
+    public static final String DELETE = "DELETE" ;
+    public static final String RENAME = "RENAME" ;
+
 
     public SFile(String pathname) {
         super(pathname);
@@ -22,52 +24,12 @@ public class SFile extends File {
         super(parent, child);
     }
 
-    public void setSyncStatus(boolean status){
-
-        if(status == true) {
-            syncStatus = true;
-            moveStatus = false;
-            renameStatus = false;
-            newStatus = false;
-            deleteStatus = false;
-        }else
-            syncStatus = false;
-
+    public void setSyncStatus(boolean syncStatus){
+        this.syncStatus = syncStatus ;
     }
 
-    public boolean getSyncStatus(){
-        return syncStatus ;
-    }
 
-    public boolean isMoveStatus() {
-        return moveStatus;
-    }
-
-    public void setMoveStatus(boolean moveStatus) {
-        this.moveStatus = moveStatus;
-    }
-
-    public boolean isRenameStatus() {
-        return renameStatus;
-    }
-
-    public void setRenameStatus(boolean renameStatus) {
-        this.renameStatus = renameStatus;
-    }
-
-    public boolean isNewStatus() {
-        return newStatus;
-    }
-
-    public void setNewStatus(boolean newStatus) {
-        this.newStatus = newStatus;
-    }
-
-    public boolean isDeleteStatus() {
-        return deleteStatus;
-    }
-
-    public void setDeleteStatus(boolean deleteStatus) {
-        this.deleteStatus = deleteStatus;
+    public boolean isSyncStatus() {
+        return syncStatus;
     }
 }

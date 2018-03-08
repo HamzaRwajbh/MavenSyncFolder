@@ -1,5 +1,7 @@
 package com.mobilenoc.cheker.algorithm;
 
+import com.mobilenoc.cheker.lastsync.CheckPoint;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -12,4 +14,6 @@ public interface SyncHolder {
     boolean isNewFile(File file) throws IOException ;
 
     boolean isModified(File file);
+
+    CheckPoint getCheckPoint();
 }
