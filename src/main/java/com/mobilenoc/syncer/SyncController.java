@@ -1,4 +1,4 @@
-package com.mobilenoc.cheker;
+package com.mobilenoc.syncer;
 
 import java.io.File;
 

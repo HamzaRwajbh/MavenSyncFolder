@@ -1,4 +1,4 @@
-package com.mobilenoc.cheker.lastsync;
+package com.mobilenoc.syncer.lastsync;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

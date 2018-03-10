@@ -1,6 +1,6 @@
-package com.mobilenoc.cheker.algorithm;
+package com.mobilenoc.syncer.algorithm;
 
-import com.mobilenoc.cheker.lastsync.CheckPoint;
+import com.mobilenoc.syncer.lastsync.CheckPoint;
 
 import java.io.File;
 import java.io.IOException;

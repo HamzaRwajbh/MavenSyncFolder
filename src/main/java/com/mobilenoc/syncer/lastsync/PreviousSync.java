@@ -1,4 +1,4 @@
-package com.mobilenoc.cheker.lastsync;
+package com.mobilenoc.syncer.lastsync;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -78,5 +78,34 @@ public class PreviousSync {
 
     public List<File> getFileList() {
         return fileList;
+    }
+
+    public String getPreviousName(String firstName  , String secondName ){
+        String splitLine[] ;
+        String line ;
+        BufferedReader bufferedReader = null;
+        try{
+            bufferedReader = new BufferedReader(new FileReader(previousSyncFile));
+            while(( line = bufferedReader.readLine()) != null){
+                splitLine = line.split(";");
+                System.out.println(splitLine[1]);
+                if(splitLine[1].equals(firstName)) {
+                    return firstName;
+                }else
+                if (splitLine[1].equals(secondName)){
+                    return secondName;
+                }
+            }
+        }catch (IOException e){
+            LOGGER.log(Level.WARNING,"previous sync file does not exist !");
+            e.printStackTrace();
+        }finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null ;
     }
 }
