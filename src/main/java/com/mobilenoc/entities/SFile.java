@@ -2,38 +2,46 @@ package com.mobilenoc.entities;
 
 import java.io.File;
 
-public class SFile extends File {
+public class SFile {
 
-    private boolean syncStatus = true ;
-    public static final String MOVE = "MOVE" ;
-    public static final String NEW = "NEW" ;
-    public static final String DELETE = "DELETE" ;
-    public static final String RENAME = "RENAME" ;
-    private String status ;
+    public static final int NEW = 0 ;
+    public static final int MOVE = 1 ;
+    public static final int DELETE = 2 ;
+    public static final int RENAME = 3 ;
+    public static final int RENAME_AND_MOVE = 4 ;
 
-    public SFile(String pathname) {
-        super(pathname);
+    private File file ;
+    private int status ;
+    private String newDestination = null ;
+    private String newName = null ;
+
+
+    public SFile(File file, int status, String newDestination, String newName) {
+        this.file = file;
+        this.status = status;
+        this.newDestination = newDestination;
+        this.newName = newName;
     }
 
-    public SFile(String parent, String child) {
-        super(parent, child);
+    public String getNewName() {
+        return newName;
     }
 
-    public SFile(File parent, String child) {
-        super(parent, child);
+    public String getNewDestination() {
+        return newDestination;
     }
 
-    public SFile(File file) {
-        super(file.getAbsolutePath());
+    public void setStatus(int status){this.status = status; }
+
+    public int getStatus() {
+        return status;
     }
 
-    public void setSyncStatus(boolean syncStatus){
-        this.syncStatus = syncStatus ;
+    public void setNewDestination(String newDestination) {
+        this.newDestination = newDestination;
     }
 
-
-    public boolean isSyncStatus() {
-        return syncStatus;
+    public void setNewName(String newName) {
+        this.newName = newName;
     }
-    public void setStatus(String status){this.status = status; }
 }

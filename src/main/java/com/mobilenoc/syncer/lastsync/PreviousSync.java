@@ -1,10 +1,13 @@
 package com.mobilenoc.syncer.lastsync;
 
+import com.mobilenoc.syncer.SyncController;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static com.mobilenoc.util.OperationUtil.*;
 
 public class PreviousSync {
 
@@ -14,9 +17,7 @@ public class PreviousSync {
     private static PreviousSync INSTANCE = null ;
     private List<File> fileList = new ArrayList<>();
 
-    private PreviousSync(){
-        fillFileList();
-    }
+    private PreviousSync(){}
 
     public static PreviousSync getINSTANCE() {
         if(INSTANCE == null){
@@ -25,39 +26,15 @@ public class PreviousSync {
         return INSTANCE ;
     }
 
-    private void fillFileList() {
-        File tempFile;
-        String splitLine[] ;
-        String line ;
-        BufferedReader bufferedReader = null;
-        try{
-            bufferedReader = new BufferedReader(new FileReader(previousSyncFile));
-            while(( line = bufferedReader.readLine()) != null){
-                splitLine = line.split(";");
-                tempFile = new File(splitLine[0],splitLine[1]);
-                fileList.add(tempFile);
-            }
-        }catch (IOException e){
-            LOGGER.log(Level.WARNING,"previous sync file does not exist !");
-            e.printStackTrace();
-        }finally {
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void setCurrentSynchronizedFile(List<File> files)  {
-        fileList.clear();
-        setFileList(files);
+    public void setCurrentSynchronizedFile(File file)  {
+        List<File> files = getAllFile(file);
         BufferedWriter bufferedWriter = null;
-
+        String location ;
         try {
             bufferedWriter = new BufferedWriter(new FileWriter(previousSyncFile));
-            for(File file : files) {
-                bufferedWriter.write(file.getParentFile().getPath() + ";" + file.getName());
+            for(File subFile : files) {
+                location = subFile.getParentFile().getPath().replace(SyncController.getFirstFolder().getAbsolutePath(),"MAIN");
+                bufferedWriter.write(location + ";" + subFile.getName());
                 bufferedWriter.newLine();
             }
         } catch (IOException e) {
@@ -72,15 +49,9 @@ public class PreviousSync {
 
     }
 
-    private void setFileList(List<File> fileList) {
-        this.fileList = fileList;
-    }
 
-    public List<File> getFileList() {
-        return fileList;
-    }
 
-    public String getPreviousName(String firstName  , String secondName ){
+    public String getNewName(String firstName  , String secondName ){
         String splitLine[] ;
         String line ;
         BufferedReader bufferedReader = null;
@@ -88,12 +59,11 @@ public class PreviousSync {
             bufferedReader = new BufferedReader(new FileReader(previousSyncFile));
             while(( line = bufferedReader.readLine()) != null){
                 splitLine = line.split(";");
-                System.out.println(splitLine[1]);
                 if(splitLine[1].equals(firstName)) {
-                    return firstName;
+                    return secondName;
                 }else
                 if (splitLine[1].equals(secondName)){
-                    return secondName;
+                    return firstName;
                 }
             }
         }catch (IOException e){
@@ -108,4 +78,45 @@ public class PreviousSync {
         }
         return null ;
     }
+
+    public String getNewLocation(File firstFile, File secondFile) {
+        String splitLine[];
+        String line;
+        BufferedReader bufferedReader = null;
+        String firstParentLocation = replaceLocationToMain(firstFile.getParentFile().getAbsolutePath()) ;
+        String secondParentLocation = replaceLocationToMain(secondFile.getParentFile().getAbsolutePath());
+        try{
+            bufferedReader = new BufferedReader(new FileReader(previousSyncFile));
+            while(( line = bufferedReader.readLine()) != null){
+                splitLine = line.split(";");
+                if(splitLine[1].equals(firstFile.getName()) && splitLine[0].equals(firstParentLocation)) {
+                    return secondParentLocation;
+                }else
+                if (splitLine[1].equals(secondFile.getName()) && splitLine[0].equals(secondParentLocation)){
+                    return firstParentLocation;
+                }
+            }
+        }catch (IOException e){
+            LOGGER.log(Level.WARNING,"previous sync file does not exist !");
+            e.printStackTrace();
+        }finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null ;
+    }
+
+    public static String replaceLocationToMain(String location){
+        String pathA = SyncController.getFirstFolder().getAbsolutePath() ;
+        String pathB = SyncController.getSecondFolder().getAbsolutePath() ;
+        if(location.contains(pathA)){
+            return location.replace(pathA,"MAIN") ;
+        }else if(location.contains(pathB))
+            return location.replace(pathB,"MAIN");
+        return null ;
+    }
+
 }
